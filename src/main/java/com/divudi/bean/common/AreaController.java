@@ -125,6 +125,33 @@ public class AreaController implements Serializable {
         return area;
     }
 
+    public Area findArea(String areaName, AreaType type, Area superArea) {
+        Area area;
+        String sql;
+        HashMap hm = new HashMap();
+        sql = "select c from Area c "
+                + " where c.retired=false ";
+        if (type != null) {
+            hm.put("ty", type);
+            sql += " and c.areaType=:ty ";
+        }
+        if (areaName != null) {
+            sql += " and upper(c.name) like :q ";
+            hm.put("q", "%" + areaName.toUpperCase() + "%");
+        }
+        if (superArea != null) {
+            sql += " and c.superArea =:supa ";
+            hm.put("supa", superArea);
+        }
+        area = getFacade().findFirstBySQL(sql, hm);
+        if (area == null) {
+            area = new Area();
+            area.setName(areaName);
+            area.setSuperArea(superArea);
+            getFacade().create(area);
+        }
+        return area;
+    }
     
     
     

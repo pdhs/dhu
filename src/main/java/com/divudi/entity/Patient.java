@@ -96,6 +96,51 @@ public class Patient implements Serializable {
     Item occupation;
     @ManyToOne
     Item educationLevel;
+    @ManyToOne
+    Item funds;
+
+    @Lob
+    String careGiverDetails;
+    @Lob
+    String diagnosis;
+    @Lob
+    String treatments;
+
+    public String getCareGiverDetails() {
+        return careGiverDetails;
+    }
+
+    public void setCareGiverDetails(String careGiverDetails) {
+        this.careGiverDetails = careGiverDetails;
+    }
+
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
+    }
+
+    public String getTreatments() {
+        return treatments;
+    }
+
+    public void setTreatments(String treatments) {
+        this.treatments = treatments;
+    }
+    
+    
+    
+    public Item getFunds() {
+        return funds;
+    }
+
+    public void setFunds(Item funds) {
+        this.funds = funds;
+    }
+    
+    
 
     public Item getOccupation() {
         return occupation;

@@ -960,16 +960,19 @@ public class ClinicalExcelManager implements Serializable {
                 cell = sheet.getCell(0, i);
                 strIndexNo = cell.getContents();
                 Long lngIndexNo = 0L;
+                System.out.println("strIndexNo = " + strIndexNo);
                 try {
-                    lngIndexNo = Long.getLong(strIndexNo);
+                    lngIndexNo = Long.parseLong(strIndexNo);
                     pt.setIndexNo(lngIndexNo);
+                    System.out.println("lngIndexNo = " + lngIndexNo);
                 } catch (Exception e) {
                     System.out.println("e = " + e);
                 }
 
                 cell = sheet.getCell(1, i);
                 strClinicNo = cell.getContents();
-                pt.setCode(strClinicNo);
+                pt.setClinicNumber(strClinicNo);
+                System.out.println("strClinicNo = " + strClinicNo);
 
                 cell = sheet.getCell(2, i);
                 strFullName = cell.getContents();
@@ -1000,13 +1003,13 @@ public class ClinicalExcelManager implements Serializable {
 
                 cell = sheet.getCell(7, i);
                 strDsArea = cell.getContents();
-                Area ds = areaController.findArea(strDsArea, AreaType.Divisional_Secretariat);
-                pt.setDistrict(ds);
+                Area ds = areaController.findArea(strDsArea, AreaType.Divisional_Secretariat,d);
+                pt.setDivisionalSecretariat(ds);
 
                 cell = sheet.getCell(8, i);
                 strGnArea = cell.getContents();
-                Area gna = areaController.findArea(strGnArea, AreaType.Grama_Niladhari_Divisions);
-                pt.setDistrict(gna);
+                Area gna = areaController.findArea(strGnArea, AreaType.Grama_Niladhari_Divisions,ds);
+                pt.setGramaNiladhariArea(gna);
 
                 cell = sheet.getCell(9, i);
                 strNic = cell.getContents();
@@ -1021,6 +1024,8 @@ public class ClinicalExcelManager implements Serializable {
                 }
                 p.setDob(dob);
                 
+                
+                
                 cell = sheet.getCell(12, i);
                 strOcc = cell.getContents();
                 Item occ = itemController.findItem(strOcc, SymanticType.Occupation_or_Discipline);
@@ -1028,8 +1033,39 @@ public class ClinicalExcelManager implements Serializable {
                 
                 cell = sheet.getCell(13, i);
                 strEl = cell.getContents();
-                Item edu = itemController.findItem(strOcc, SymanticType.Educational_Activity);
+                Item edu = itemController.findItem(strEl, SymanticType.Educational_Activity);
                 pt.setEducationLevel(edu);
+                
+                cell = sheet.getCell(14, i);
+                strSince = cell.getContents();
+                int intSince;
+                try {
+                    intSince = Integer.parseInt(strSince);
+                } catch (Exception e) {
+                    System.out.println("e = " + e);
+                    intSince = 2016;
+                }
+                Calendar c = Calendar.getInstance();
+                c.set(Calendar.YEAR, intSince);
+                pt.setFromDate(c.getTime());
+                
+                cell = sheet.getCell(15, i);
+                strFunds = cell.getContents();
+                Item funds = itemController.findItem(strFunds, SymanticType.Self_help_or_Relief_Organization);
+                pt.setFunds(funds);
+                
+                cell = sheet.getCell(16, i);
+                strCaregiver = cell.getContents();
+                pt.setCareGiverDetails(strCaregiver);
+                
+                cell = sheet.getCell(17, i);
+                strDx = cell.getContents();
+                pt.setCareGiverDetails(strDx);
+                
+                cell = sheet.getCell(18, i);
+                strRx = cell.getContents();
+                pt.setCareGiverDetails(strRx);
+                
                 
                 personFacade.create(p);
                 patientFacade.create(pt);
