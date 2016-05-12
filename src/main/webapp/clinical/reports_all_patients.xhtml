@@ -64,7 +64,21 @@
                                 <h:outputLabel value="#{pe.educationLevel.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Treatments Since" >
-                                <h:outputLabel value="To Do" ></h:outputLabel>
+                                <h:outputLabel value="#{pe.fromDate}" >
+                                    <f:convertDateTime pattern="yyyy" ></f:convertDateTime>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Funds Receiving" >
+                                <h:outputLabel value="#{pe.funds.name}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Care Giver" >
+                                <h:outputLabel value="#{pe.careGiverDetails}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Diagnosis" >
+                                <h:outputLabel value="#{pe.diagnosis}" ></h:outputLabel>
+                            </p:column>
+                             <p:column headerText="Treatment" >
+                                 <h:outputLabel value="#{pe.treatments}" ></h:outputLabel>
                             </p:column>
                         </p:dataTable>
 

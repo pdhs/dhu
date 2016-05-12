@@ -1013,7 +1013,7 @@ public class ClinicalExcelManager implements Serializable {
 
                 cell = sheet.getCell(9, i);
                 strNic = cell.getContents();
-                p.setPhone(strNic);
+                p.setNic(strNic);
 
                 cell = sheet.getCell(10, i);
                 strDob = cell.getContents();
@@ -1060,11 +1060,11 @@ public class ClinicalExcelManager implements Serializable {
                 
                 cell = sheet.getCell(17, i);
                 strDx = cell.getContents();
-                pt.setCareGiverDetails(strDx);
+                pt.setDiagnosis(strDx);
                 
                 cell = sheet.getCell(18, i);
                 strRx = cell.getContents();
-                pt.setCareGiverDetails(strRx);
+                pt.setTreatments(strRx);
                 
                 
                 personFacade.create(p);
