@@ -66,6 +66,8 @@ import com.divudi.facade.ItemFacade;
 import com.divudi.facade.ItemsDistributorsFacade;
 import com.divudi.facade.MeasurementUnitFacade;
 import com.divudi.facade.PatientEncounterFacade;
+import com.divudi.facade.PatientFacade;
+import com.divudi.facade.PersonFacade;
 import com.divudi.facade.PharmaceuticalBillItemFacade;
 import com.divudi.facade.PharmaceuticalItemCategoryFacade;
 import com.divudi.facade.PharmaceuticalItemFacade;
@@ -1029,7 +1031,10 @@ public class ClinicalExcelManager implements Serializable {
                 Item edu = itemController.findItem(strOcc, SymanticType.Educational_Activity);
                 pt.setEducationLevel(edu);
                 
+                personFacade.create(p);
+                patientFacade.create(pt);
                 
+                System.out.println("pt = " + pt);
                 
                 
                 
@@ -1046,6 +1051,13 @@ public class ClinicalExcelManager implements Serializable {
         }
     }
 
+    @EJB
+    PersonFacade personFacade;
+    
+    @EJB
+    PatientFacade patientFacade;
+    
+    
     @EJB
     ItemsDistributorsFacade itemsDistributorsFacade;
 
