@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/resources/template/template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="content">
+        <h:form enctype="multipart/form-data">
+            <p:panel header="Import Patients from Excel" >
+                <p style="color: red;" >Use only *.xls files. <b><i>NOT</i> xlsx files.</b></p>
+                <p:panelGrid columns="14" style="border: 1px solid blue;" >
+                    <h:outputLabel value ="0. Index No" ></h:outputLabel>
+                    <h:outputLabel value ="1. Clinic No" ></h:outputLabel>
+                    <h:outputLabel value ="2. Full Name " ></h:outputLabel>
+                    <h:outputLabel value ="3. Sex" ></h:outputLabel>
+                    <h:outputLabel value ="4. Address" ></h:outputLabel>
+                    <h:outputLabel value ="5. Telephone" ></h:outputLabel>
+                    <h:outputLabel value ="6. District" ></h:outputLabel>
+                    <h:outputLabel value ="7. Divisional secratory Area" ></h:outputLabel>
+                    <h:outputLabel value ="8. Grama Niladhari Division" ></h:outputLabel>
+                    <h:outputLabel value ="9. NIC" ></h:outputLabel>
+                    <h:outputLabel value ="10. Date of Birth" ></h:outputLabel>
+                    <h:outputLabel value ="12. Age" ></h:outputLabel>
+                    <h:outputLabel value ="12. Occupation" ></h:outputLabel>
+                    <h:outputLabel value ="13. Educational Level" ></h:outputLabel>
+                    <h:outputLabel value ="14. Treatment Taken Since" ></h:outputLabel>
+                    <h:outputLabel value ="15. Funds Receiving" ></h:outputLabel>
+                    <h:outputLabel value ="16. Caregiver" ></h:outputLabel>
+                    <h:outputLabel value ="17. Diagnosis" ></h:outputLabel>
+                    <h:outputLabel value ="18. Treatment" ></h:outputLabel>
+                </p:panelGrid>
+                <p:fileUpload value="#{clinicalExcelManager.file}" mode="simple"/>
+                <h:commandButton value="Submit" action="#{clinicalExcelManager.importToExcel}"/>
+
+            </p:panel>
+
+
+
+        </h:form>
+
+
+
+    </ui:define>
+
+
+</ui:composition>
