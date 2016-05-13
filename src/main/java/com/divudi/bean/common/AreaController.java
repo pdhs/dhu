@@ -87,7 +87,7 @@ public class AreaController implements Serializable {
             sql += " and c.areaType=:ty ";
         }
         if (qry != null) {
-            qry += " and upper(c.name) like :q ";
+            sql += " and upper(c.name) like :q ";
             hm.put("q", "%" + qry.toUpperCase() + "%");
         }
         sql += " order by c.name";
