@@ -13,6 +13,7 @@ import com.divudi.entity.Packege;
 import com.divudi.entity.Service;
 import com.divudi.entity.ServiceCategory;
 import com.divudi.entity.ServiceSubCategory;
+import com.divudi.entity.clinical.ClinicalEntity;
 import com.divudi.entity.inward.InwardService;
 import com.divudi.entity.inward.TheatreService;
 import com.divudi.entity.lab.Investigation;
@@ -522,6 +523,34 @@ public class ItemController implements Serializable {
 
     }
 
+    public List<Item> completeSymanticType(String query, SymanticType type) {
+        List<Item> suggestions;
+        String j;
+        Map m = new HashMap();
+        j = "select i "
+                + " from Item i "
+                + " where upper(i.name)like :iname "
+                + " and i.symanticType=:ist";
+        m.put("iname", query.toUpperCase());
+        m.put("ist", type);
+        suggestions = getFacade().findBySQL(j, m);
+        return suggestions;
+    }
+
+    
+    public List<Item> completeOccupations(String qry){
+        return completeSymanticType(qry, SymanticType.Occupation_or_Discipline);
+    }
+    
+    public List<Item> completeEducationLevel(String qry){
+        return completeSymanticType(qry, SymanticType.Occupation_or_Discipline);
+    }
+    
+    public List<Item> completeFunds(String qry){
+        return completeSymanticType(qry, SymanticType.Self_help_or_Relief_Organization);
+    }
+    
+    
     public List<Item> completeAmpAndAmppItem(String query) {
         List<Item> suggestions;
         String sql;
@@ -974,18 +1003,17 @@ public class ItemController implements Serializable {
         return current;
     }
 
-    public Item findItem(String itemName, SymanticType type){
+    public Item findItem(String itemName, SymanticType type) {
         String j;
         Map m = new HashMap();
-        j="select i "
+        j = "select i "
                 + " from Item i "
                 + " where upper(i.name)=:iname "
                 + " and i.symanticType=:ist";
         m.put("iname", itemName);
         m.put("ist", type);
-        Item i = getFacade().findFirstBySQL(j, m)
-                ;
-        if(i==null){
+        Item i = getFacade().findFirstBySQL(j, m);
+        if (i == null) {
             i = new Item();
             i.setName(itemName);
             i.setSymanticType(type);
@@ -993,7 +1021,7 @@ public class ItemController implements Serializable {
         }
         return i;
     }
-    
+
     /**
      * Set the current item
      *

@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pharmacy="http://java.sun.com/jsf/composite/pharmacy">
+
+    <h:body>
+        <ui:composition template="/resources/template/template.xhtml">
+            <ui:define name="content">
+                <h:form >
+
+                    <p:commandButton value="Fill" ajax="false" action="#{patientController.fillAllPatients}" ></p:commandButton>
+
+                    <p:panel id="pList" header="Patient List" >
+
+                        <p:dataTable value="#{patientController.items}" var="pe" 
+                                     emptyMessage="No Patients">
+                            <p:column headerText="Index No" >
+                                <h:outputLabel value="#{pe.indexNo}" >
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Clinic No" >
+                                <h:outputLabel value="#{pe.clinicNumber}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Full Name" >
+                                <h:outputLabel value="#{pe.person.nameWithTitle}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Sex" >
+                                <h:outputLabel value="#{pe.person.sex}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Address" >
+                                <h:outputLabel value="#{pe.person.address}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Telephone" >
+                                <h:outputLabel value="#{pe.person.phone}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="District" >
+                                <h:outputLabel value="#{pe.district.name}" ></h:outputLabel>
+                            </p:column>
+                             <p:column headerText="Divisional Secratariet Area" >
+                                 <h:outputLabel value="#{pe.divisionalSecretariat.name}" ></h:outputLabel>
+                            </p:column>
+                             <p:column headerText="Gramaniladhari Area" >
+                                 <h:outputLabel value="#{pe.gramaNiladhariArea.name}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="NIC No" >
+                                <h:outputLabel value="#{pe.person.nic}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Birthday" >
+                                <h:outputLabel value="#{pe.person.dob}" >
+                                    <f:convertDateTime pattern="dd-MMMM-yyyy" ></f:convertDateTime>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Age" >
+                                <h:outputLabel value="#{pe.person.age}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Occupation" >
+                                <h:outputLabel value="#{pe.occupation.name}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Education Level" >
+                                <h:outputLabel value="#{pe.educationLevel.name}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Treatments Since" >
+                                <h:outputLabel value="#{pe.fromDate}" >
+                                    <f:convertDateTime pattern="yyyy" ></f:convertDateTime>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Funds Receiving" >
+                                <h:outputLabel value="#{pe.funds.name}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Care Giver" >
+                                <h:outputLabel value="#{pe.careGiverDetails}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Diagnosis" >
+                                <h:outputLabel value="#{pe.diagnosis}" ></h:outputLabel>
+                            </p:column>
+                             <p:column headerText="Treatment" >
+                                 <h:outputLabel value="#{pe.treatments}" ></h:outputLabel>
+                            </p:column>
+                        </p:dataTable>
+
+                    </p:panel>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>

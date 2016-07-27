@@ -12,46 +12,24 @@ import com.divudi.bean.common.SessionController;
 import com.divudi.bean.common.UtilityController;
 import com.divudi.bean.inward.InwardBeanController;
 import com.divudi.data.AreaType;
-import com.divudi.data.BillType;
-import com.divudi.data.DepartmentType;
 import com.divudi.data.InstitutionType;
-import com.divudi.data.PaymentMethod;
 import com.divudi.data.Sex;
 import com.divudi.data.SymanticType;
 import com.divudi.data.dataStructure.PharmacyImportCol;
-import com.divudi.data.inward.InwardChargeType;
 import com.divudi.ejb.PharmacyBean;
 import com.divudi.entity.Area;
-import com.divudi.entity.Bill;
-import com.divudi.entity.BillFee;
-import com.divudi.entity.BillItem;
-import com.divudi.entity.BilledBill;
-import com.divudi.entity.CancelledBill;
-import com.divudi.entity.Category;
-import com.divudi.entity.Department;
 import com.divudi.entity.Institution;
-import com.divudi.entity.IssueRateMargins;
 import com.divudi.entity.Item;
 import com.divudi.entity.Patient;
-import com.divudi.entity.PatientEncounter;
 import com.divudi.entity.Person;
-import com.divudi.entity.Service;
-import com.divudi.entity.hr.StaffShift;
-import com.divudi.entity.inward.InwardService;
-import com.divudi.entity.inward.TimedItem;
-import com.divudi.entity.lab.Investigation;
 import com.divudi.entity.pharmacy.Amp;
 import com.divudi.entity.pharmacy.Ampp;
 import com.divudi.entity.pharmacy.Atm;
-import com.divudi.entity.pharmacy.ItemBatch;
 import com.divudi.entity.pharmacy.ItemsDistributors;
 import com.divudi.entity.pharmacy.MeasurementUnit;
-import com.divudi.entity.pharmacy.PharmaceuticalBillItem;
 import com.divudi.entity.pharmacy.PharmaceuticalItem;
 import com.divudi.entity.pharmacy.PharmaceuticalItemCategory;
 import com.divudi.entity.pharmacy.PharmaceuticalItemType;
-import com.divudi.entity.pharmacy.StockHistory;
-import com.divudi.entity.pharmacy.StoreItemCategory;
 import com.divudi.entity.pharmacy.Vmp;
 import com.divudi.entity.pharmacy.Vmpp;
 import com.divudi.entity.pharmacy.Vtm;
@@ -71,7 +49,6 @@ import com.divudi.facade.PersonFacade;
 import com.divudi.facade.PharmaceuticalBillItemFacade;
 import com.divudi.facade.PharmaceuticalItemCategoryFacade;
 import com.divudi.facade.PharmaceuticalItemFacade;
-import com.divudi.facade.StaffShiftFacade;
 import com.divudi.facade.StockFacade;
 import com.divudi.facade.StockHistoryFacade;
 import com.divudi.facade.StoreItemCategoryFacade;
@@ -86,7 +63,6 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -97,7 +73,6 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.TemporalType;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -960,16 +935,19 @@ public class ClinicalExcelManager implements Serializable {
                 cell = sheet.getCell(0, i);
                 strIndexNo = cell.getContents();
                 Long lngIndexNo = 0L;
+                System.out.println("strIndexNo = " + strIndexNo);
                 try {
-                    lngIndexNo = Long.getLong(strIndexNo);
+                    lngIndexNo = Long.parseLong(strIndexNo);
                     pt.setIndexNo(lngIndexNo);
+                    System.out.println("lngIndexNo = " + lngIndexNo);
                 } catch (Exception e) {
                     System.out.println("e = " + e);
                 }
 
                 cell = sheet.getCell(1, i);
                 strClinicNo = cell.getContents();
-                pt.setCode(strClinicNo);
+                pt.setClinicNumber(strClinicNo);
+                System.out.println("strClinicNo = " + strClinicNo);
 
                 cell = sheet.getCell(2, i);
                 strFullName = cell.getContents();
@@ -1000,17 +978,17 @@ public class ClinicalExcelManager implements Serializable {
 
                 cell = sheet.getCell(7, i);
                 strDsArea = cell.getContents();
-                Area ds = areaController.findArea(strDsArea, AreaType.Divisional_Secretariat);
-                pt.setDistrict(ds);
+                Area ds = areaController.findArea(strDsArea, AreaType.Divisional_Secretariat,d);
+                pt.setDivisionalSecretariat(ds);
 
                 cell = sheet.getCell(8, i);
                 strGnArea = cell.getContents();
-                Area gna = areaController.findArea(strGnArea, AreaType.Grama_Niladhari_Divisions);
-                pt.setDistrict(gna);
+                Area gna = areaController.findArea(strGnArea, AreaType.Grama_Niladhari_Divisions,ds);
+                pt.setGramaNiladhariArea(gna);
 
                 cell = sheet.getCell(9, i);
                 strNic = cell.getContents();
-                p.setPhone(strNic);
+                p.setNic(strNic);
 
                 cell = sheet.getCell(10, i);
                 strDob = cell.getContents();
@@ -1021,6 +999,8 @@ public class ClinicalExcelManager implements Serializable {
                 }
                 p.setDob(dob);
                 
+                
+                
                 cell = sheet.getCell(12, i);
                 strOcc = cell.getContents();
                 Item occ = itemController.findItem(strOcc, SymanticType.Occupation_or_Discipline);
@@ -1028,8 +1008,39 @@ public class ClinicalExcelManager implements Serializable {
                 
                 cell = sheet.getCell(13, i);
                 strEl = cell.getContents();
-                Item edu = itemController.findItem(strOcc, SymanticType.Educational_Activity);
+                Item edu = itemController.findItem(strEl, SymanticType.Educational_Activity);
                 pt.setEducationLevel(edu);
+                
+                cell = sheet.getCell(14, i);
+                strSince = cell.getContents();
+                int intSince;
+                try {
+                    intSince = Integer.parseInt(strSince);
+                } catch (Exception e) {
+                    System.out.println("e = " + e);
+                    intSince = 2016;
+                }
+                Calendar c = Calendar.getInstance();
+                c.set(Calendar.YEAR, intSince);
+                pt.setFromDate(c.getTime());
+                
+                cell = sheet.getCell(15, i);
+                strFunds = cell.getContents();
+                Item funds = itemController.findItem(strFunds, SymanticType.Self_help_or_Relief_Organization);
+                pt.setFunds(funds);
+                
+                cell = sheet.getCell(16, i);
+                strCaregiver = cell.getContents();
+                pt.setCareGiverDetails(strCaregiver);
+                
+                cell = sheet.getCell(17, i);
+                strDx = cell.getContents();
+                pt.setDiagnosis(strDx);
+                
+                cell = sheet.getCell(18, i);
+                strRx = cell.getContents();
+                pt.setTreatments(strRx);
+                
                 
                 personFacade.create(p);
                 patientFacade.create(pt);
