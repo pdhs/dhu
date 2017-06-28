@@ -61,7 +61,6 @@ public class Patient implements Serializable {
     String age;
     @Transient
     Long ageInDays;
-    @Transient
     String clinicNumber;
     @Lob
     @Column(columnDefinition = "LONGBLOB")
